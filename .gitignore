@@ -8,3 +8,4 @@ dist/
 backend/data/vector_store/*
 !backend/data/vector_store/.gitkeep
 .DS_Store
+.claude/
