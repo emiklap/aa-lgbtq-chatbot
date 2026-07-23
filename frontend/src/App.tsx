@@ -1,9 +1,5 @@
 import { useState, type KeyboardEvent } from "react";
-
-interface Message {
-  role: "user" | "assistant";
-  content: string;
-}
+import type { Message, ChatResponse } from "./types/api";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
 
@@ -31,7 +27,7 @@ function App() {
         throw new Error(`Request failed with status ${response.status}`);
       }
 
-      const data = await response.json();
+      const data: ChatResponse = await response.json();
       setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
     } catch (error) {
       console.error(error);
