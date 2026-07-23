@@ -1,6 +1,7 @@
 import { useState, type KeyboardEvent } from "react";
 import type { Message, ChatResponse } from "./types/api";
 import { Footer } from "./components/Footer";
+import { Home } from "./pages/Home";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
 
@@ -8,6 +9,7 @@ function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [started, setStarted] = useState(false);
 
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
@@ -44,6 +46,10 @@ function App() {
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.nativeEvent.isComposing) sendMessage();
   };
+
+  if (!started) {
+    return <Home onStart={() => setStarted(true)} />;
+  }
 
   return (
     <div style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif" }}>
