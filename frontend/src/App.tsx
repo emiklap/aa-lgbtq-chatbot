@@ -2,6 +2,7 @@ import { useState, type KeyboardEvent } from "react";
 import type { Message, ChatResponse } from "./types/api";
 import { Footer } from "./components/Footer";
 import { Home } from "./pages/Home";
+import { ResourcePanel } from "./components/ResourcePanel";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
 
@@ -10,6 +11,7 @@ function App() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [started, setStarted] = useState(false);
+  const [showResources, setShowResources] = useState(false);
 
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
@@ -82,6 +84,9 @@ function App() {
         ))}
         {loading && <p style={{ color: "#888" }}>Thinking...</p>}
       </div>
+      <button type="button" onClick={() => setShowResources(true)} style={{ marginBottom: 8 }}>
+        Show Resources
+      </button>
       <div style={{ display: "flex", gap: 8 }}>
         <label htmlFor="chat-input" style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)" }}>
           Type a message
@@ -99,6 +104,7 @@ function App() {
           Send
         </button>
       </div>
+      {showResources && <ResourcePanel onClose={() => setShowResources(false)} />}
       <Footer />
     </div>
   );
