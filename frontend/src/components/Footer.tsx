@@ -1,3 +1,5 @@
+import { colors } from "../theme";
+
 export function Footer() {
   return (
     <footer
@@ -5,9 +7,9 @@ export function Footer() {
         marginTop: 16,
         padding: "8px 0",
         fontSize: 12,
-        color: "#666",
+        color: colors.textMuted,
         textAlign: "center",
-        borderTop: "1px solid #eee",
+        borderTop: `1px solid ${colors.border}`,
       }}
     >
       This chatbot is for reflection and learning. It is not a therapist, crisis

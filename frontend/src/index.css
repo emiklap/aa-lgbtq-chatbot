@@ -17,7 +17,7 @@
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: light dark;
+  color-scheme: light;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -27,26 +27,6 @@
 
   @media (max-width: 1024px) {
     font-size: 16px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
   }
 }
 
@@ -64,6 +44,8 @@
 
 body {
   margin: 0;
+  background: #F4EEE2;
+  color: #2B2B28;
 }
 
 h1,
@@ -74,6 +56,7 @@ h2 {
 }
 
 h1 {
+  font-family: Georgia, 'Times New Roman', serif;
   font-size: 56px;
   letter-spacing: -1.68px;
   margin: 32px 0;
@@ -108,4 +91,23 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+/* Inline `style` props set button colors per-component; :hover/:active/:disabled
+   can't be expressed inline, so those states are handled globally here using
+   the theme's literal hex values (colors.accentDark, paper surface). */
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+button:not(:disabled):hover,
+button:not(:disabled):active {
+  background: #46664F !important;
+  border-color: #46664F !important;
+  color: #FBF7EE !important;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }

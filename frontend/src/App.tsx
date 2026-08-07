@@ -4,6 +4,7 @@ import { Footer } from "./components/Footer";
 import { Home } from "./pages/Home";
 import { ResourcePanel } from "./components/ResourcePanel";
 import { FeedbackForm } from "./components/FeedbackForm";
+import { colors } from "./theme";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
 
@@ -69,40 +70,42 @@ function App() {
         role="log"
         aria-live="polite"
         style={{
-          border: "1px solid #ccc",
+          border: `1px solid ${colors.border}`,
           borderRadius: 8,
           padding: 16,
           minHeight: 300,
           marginBottom: 16,
         }}
       >
-        {messages.length === 0 && <p style={{ color: "#888" }}>Say hello to start.</p>}
+        {messages.length === 0 && <p style={{ color: colors.textMuted }}>Say hello to start.</p>}
         {messages.map((m, i) => (
           <div key={i} style={{ margin: "8px 0", textAlign: m.role === "user" ? "right" : "left" }}>
             <span
               style={{
                 display: "inline-block",
                 padding: "8px 12px",
-                borderRadius: 12,
-                background: m.role === "user" ? "#DCF8C6" : "#F1F0F0",
+                borderRadius: 4,
+                background: m.role === "user" ? colors.accent : colors.surface,
+                border: m.role === "user" ? "none" : `1px solid ${colors.border}`,
+                color: m.role === "user" ? "#FFFFFF" : colors.text,
               }}
             >
               {m.content}
             </span>
           </div>
         ))}
-        {loading && <p style={{ color: "#888" }}>Thinking...</p>}
+        {loading && <p style={{ color: colors.textMuted }}>Thinking...</p>}
       </div>
-      <button type="button" onClick={() => setShowResources(true)} style={{ marginBottom: 8 }}>
+      <button type="button" onClick={() => setShowResources(true)} style={{ marginBottom: 8, border: `1px solid ${colors.border}`, background: colors.surface, color: colors.text }}>
         Show Resources
       </button>
-      <button type="button" onClick={() => setPaused((p) => !p)} style={{ marginBottom: 8, marginLeft: 8 }}>
+      <button type="button" onClick={() => setPaused((p) => !p)} style={{ marginBottom: 8, marginLeft: 8, border: `1px solid ${colors.border}`, background: colors.surface, color: colors.text }}>
         {paused ? "Resume" : "Pause"}
       </button>
-      <button type="button" onClick={handleNewTopic} disabled={loading} style={{ marginBottom: 8, marginLeft: 8 }}>
+      <button type="button" onClick={handleNewTopic} disabled={loading} style={{ marginBottom: 8, marginLeft: 8, border: `1px solid ${colors.border}`, background: colors.surface, color: colors.text }}>
         New Topic
       </button>
-      <button type="button" onClick={() => setShowFeedback(true)} style={{ marginBottom: 8, marginLeft: 8 }}>
+      <button type="button" onClick={() => setShowFeedback(true)} style={{ marginBottom: 8, marginLeft: 8, border: `1px solid ${colors.border}`, background: colors.surface, color: colors.text }}>
         Feedback
       </button>
       <div style={{ display: "flex", gap: 8 }}>
@@ -116,9 +119,9 @@ function App() {
           onKeyDown={handleKeyDown}
           placeholder={paused ? "Conversation paused" : "Type a message..."}
           disabled={loading || paused}
-          style={{ flex: 1, padding: 8 }}
+          style={{ flex: 1, padding: 8, border: `1px solid ${colors.border}` }}
         />
-        <button onClick={sendMessage} disabled={loading || paused}>
+        <button onClick={sendMessage} disabled={loading || paused} style={{ border: `1px solid ${colors.border}`, background: colors.surface, color: colors.text }}>
           Send
         </button>
       </div>

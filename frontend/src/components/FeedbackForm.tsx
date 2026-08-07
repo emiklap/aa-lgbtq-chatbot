@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { FeedbackRequest } from "../types/api";
+import { colors } from "../theme";
 
 interface FeedbackFormProps {
   onClose: () => void;
@@ -37,7 +38,8 @@ export function FeedbackForm({ onClose }: FeedbackFormProps) {
     >
       <div
         style={{
-          background: "white",
+          background: colors.surface,
+          border: `1px solid ${colors.border}`,
           borderRadius: 8,
           padding: 24,
           width: 320,
@@ -46,16 +48,16 @@ export function FeedbackForm({ onClose }: FeedbackFormProps) {
       >
         {submitted ? (
           <>
-            <h2 id="feedback-form-heading" style={{ fontSize: 18, marginBottom: 12 }}>
+            <h2 id="feedback-form-heading" style={{ fontSize: 18, marginBottom: 12, color: colors.text }}>
               Thank you for your feedback
             </h2>
-            <button type="button" onClick={onClose} style={{ cursor: "pointer" }}>
+            <button type="button" onClick={onClose} style={{ cursor: "pointer", border: `1px solid ${colors.border}` }}>
               Close
             </button>
           </>
         ) : (
           <>
-            <h2 id="feedback-form-heading" style={{ fontSize: 18, marginBottom: 12 }}>
+            <h2 id="feedback-form-heading" style={{ fontSize: 18, marginBottom: 12, color: colors.text }}>
               Feedback
             </h2>
             <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
@@ -71,12 +73,12 @@ export function FeedbackForm({ onClose }: FeedbackFormProps) {
                     width: 36,
                     height: 36,
                     borderRadius: 4,
-                    border: "1px solid #ccc",
-                    background: "white",
+                    border: `1px solid ${colors.border}`,
+                    background: colors.surface,
                     cursor: "pointer",
                     fontSize: 20,
                     lineHeight: "1",
-                    color: "#333",
+                    color: value <= (hoverRating ?? rating ?? 0) ? colors.highlight : colors.textMuted,
                   }}
                 >
                   {value <= (hoverRating ?? rating ?? 0) ? "★" : "☆"}
@@ -88,16 +90,30 @@ export function FeedbackForm({ onClose }: FeedbackFormProps) {
               onChange={(e) => setComment(e.target.value)}
               maxLength={500}
               placeholder="Optional comment"
-              style={{ width: "100%", minHeight: 80, padding: 8, marginBottom: 8, fontFamily: "inherit" }}
+              style={{
+                width: "100%",
+                minHeight: 80,
+                padding: 8,
+                marginBottom: 8,
+                fontFamily: "inherit",
+                border: `1px solid ${colors.border}`,
+                color: colors.text,
+                background: colors.surface,
+              }}
             />
-            <p style={{ fontSize: 12, color: "#888", marginBottom: 16 }}>
+            <p style={{ fontSize: 12, color: colors.textMuted, marginBottom: 16 }}>
               Please don't include personal details in your comment.
             </p>
             <div style={{ display: "flex", gap: 8 }}>
-              <button type="button" onClick={submitFeedback} disabled={rating === null} style={{ cursor: "pointer" }}>
+              <button
+                type="button"
+                onClick={submitFeedback}
+                disabled={rating === null}
+                style={{ cursor: "pointer", background: colors.accent, color: "#FFFFFF", border: "none", borderRadius: 4, padding: "8px 16px" }}
+              >
                 Submit
               </button>
-              <button type="button" onClick={onClose} style={{ cursor: "pointer" }}>
+              <button type="button" onClick={onClose} style={{ cursor: "pointer", border: `1px solid ${colors.border}` }}>
                 Cancel
               </button>
             </div>
