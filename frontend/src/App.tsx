@@ -3,6 +3,7 @@ import type { Message, ChatResponse } from "./types/api";
 import { Footer } from "./components/Footer";
 import { Home } from "./pages/Home";
 import { ResourcePanel } from "./components/ResourcePanel";
+import { FeedbackForm } from "./components/FeedbackForm";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
 
@@ -12,9 +13,11 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [started, setStarted] = useState(false);
   const [showResources, setShowResources] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   const sendMessage = async () => {
-    if (!input.trim() || loading) return;
+    if (!input.trim() || loading || paused) return;
 
     const userMessage: Message = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
@@ -47,6 +50,12 @@ function App() {
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.nativeEvent.isComposing) sendMessage();
+  };
+
+  const handleNewTopic = () => {
+    setMessages([]);
+    setInput("");
+    setPaused(false);
   };
 
   if (!started) {
@@ -87,6 +96,15 @@ function App() {
       <button type="button" onClick={() => setShowResources(true)} style={{ marginBottom: 8 }}>
         Show Resources
       </button>
+      <button type="button" onClick={() => setPaused((p) => !p)} style={{ marginBottom: 8, marginLeft: 8 }}>
+        {paused ? "Resume" : "Pause"}
+      </button>
+      <button type="button" onClick={handleNewTopic} disabled={loading} style={{ marginBottom: 8, marginLeft: 8 }}>
+        New Topic
+      </button>
+      <button type="button" onClick={() => setShowFeedback(true)} style={{ marginBottom: 8, marginLeft: 8 }}>
+        Feedback
+      </button>
       <div style={{ display: "flex", gap: 8 }}>
         <label htmlFor="chat-input" style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)" }}>
           Type a message
@@ -96,15 +114,16 @@ function App() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Type a message..."
-          disabled={loading}
+          placeholder={paused ? "Conversation paused" : "Type a message..."}
+          disabled={loading || paused}
           style={{ flex: 1, padding: 8 }}
         />
-        <button onClick={sendMessage} disabled={loading}>
+        <button onClick={sendMessage} disabled={loading || paused}>
           Send
         </button>
       </div>
       {showResources && <ResourcePanel onClose={() => setShowResources(false)} />}
+      {showFeedback && <FeedbackForm onClose={() => setShowFeedback(false)} />}
       <Footer />
     </div>
   );

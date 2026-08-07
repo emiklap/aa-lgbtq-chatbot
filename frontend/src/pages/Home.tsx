@@ -7,8 +7,10 @@ export function Home({ onStart }: HomeProps) {
     <div style={{ maxWidth: 600, margin: "80px auto", textAlign: "center", fontFamily: "sans-serif" }}>
       <h1>Welcome</h1>
       <p style={{ color: "#555", marginBottom: 24 }}>
-        This is a space for reflection and learning. When you're ready, start a
-        conversation below.
+        A space to reflect on identity, community, and history — at your own
+        pace. This chatbot is here to support your reflection and connect you
+        with community resources, not to replace real relationships or
+        professional support. You can pause, skip, or change topics anytime.
       </p>
       <button
         type="button"
