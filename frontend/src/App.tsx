@@ -4,7 +4,7 @@ import { Footer } from "./components/Footer";
 import { Home } from "./pages/Home";
 import { ResourcePanel } from "./components/ResourcePanel";
 import { FeedbackForm } from "./components/FeedbackForm";
-import { colors } from "./theme";
+import { primaryButtonBase } from "./styles/buttons";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
 
@@ -63,53 +63,57 @@ function App() {
     return <Home onStart={() => setStarted(true)} />;
   }
 
+  const toolbarButtonClass = `${primaryButtonBase} shrink-0 px-4 py-2 text-sm`;
+
   return (
-    <div style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif" }}>
-      <h1>Chatbot Prototype</h1>
+    <div className="mx-auto max-w-[600px] px-4 py-8">
+      <h1 className="mb-6 text-center font-display text-3xl font-semibold text-ink sm:text-4xl">
+        Chatbot Prototype
+      </h1>
+
+      <div
+        role="toolbar"
+        aria-label="Conversation actions"
+        className="mb-4 flex flex-nowrap gap-2 overflow-x-auto py-1 sm:flex-wrap sm:overflow-visible"
+      >
+        <button type="button" onClick={() => setShowResources(true)} className={toolbarButtonClass}>
+          Show Resources
+        </button>
+        <button type="button" onClick={() => setPaused((p) => !p)} className={toolbarButtonClass}>
+          {paused ? "Resume" : "Pause"}
+        </button>
+        <button type="button" onClick={handleNewTopic} disabled={loading} className={toolbarButtonClass}>
+          New Topic
+        </button>
+        <button type="button" onClick={() => setShowFeedback(true)} className={toolbarButtonClass}>
+          Feedback
+        </button>
+      </div>
+
       <div
         role="log"
         aria-live="polite"
-        style={{
-          border: `1px solid ${colors.border}`,
-          borderRadius: 8,
-          padding: 16,
-          minHeight: 300,
-          marginBottom: 16,
-        }}
+        className="mb-4 min-h-[300px] rounded-lg border border-teal/20 bg-linen p-4"
       >
-        {messages.length === 0 && <p style={{ color: colors.textMuted }}>Say hello to start.</p>}
+        {messages.length === 0 && <p className="text-ink/60">Say hello to start.</p>}
         {messages.map((m, i) => (
-          <div key={i} style={{ margin: "8px 0", textAlign: m.role === "user" ? "right" : "left" }}>
+          <div key={i} className={`my-2 ${m.role === "user" ? "text-right" : "text-left"}`}>
             <span
-              style={{
-                display: "inline-block",
-                padding: "8px 12px",
-                borderRadius: 4,
-                background: m.role === "user" ? colors.accent : colors.surface,
-                border: m.role === "user" ? "none" : `1px solid ${colors.border}`,
-                color: m.role === "user" ? "#FFFFFF" : colors.text,
-              }}
+              className={`inline-block rounded-lg px-3 py-2 ${
+                m.role === "user"
+                  ? "bg-teal text-white"
+                  : "border border-teal/20 bg-linen text-ink"
+              }`}
             >
               {m.content}
             </span>
           </div>
         ))}
-        {loading && <p style={{ color: colors.textMuted }}>Thinking...</p>}
+        {loading && <p className="text-ink/60">Thinking...</p>}
       </div>
-      <button type="button" onClick={() => setShowResources(true)} style={{ marginBottom: 8, border: `1px solid ${colors.border}`, background: colors.surface, color: colors.text }}>
-        Show Resources
-      </button>
-      <button type="button" onClick={() => setPaused((p) => !p)} style={{ marginBottom: 8, marginLeft: 8, border: `1px solid ${colors.border}`, background: colors.surface, color: colors.text }}>
-        {paused ? "Resume" : "Pause"}
-      </button>
-      <button type="button" onClick={handleNewTopic} disabled={loading} style={{ marginBottom: 8, marginLeft: 8, border: `1px solid ${colors.border}`, background: colors.surface, color: colors.text }}>
-        New Topic
-      </button>
-      <button type="button" onClick={() => setShowFeedback(true)} style={{ marginBottom: 8, marginLeft: 8, border: `1px solid ${colors.border}`, background: colors.surface, color: colors.text }}>
-        Feedback
-      </button>
-      <div style={{ display: "flex", gap: 8 }}>
-        <label htmlFor="chat-input" style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)" }}>
+
+      <div className="flex gap-2">
+        <label htmlFor="chat-input" className="sr-only">
           Type a message
         </label>
         <input
@@ -117,14 +121,29 @@ function App() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={paused ? "Conversation paused" : "Type a message..."}
+          placeholder={paused ? "Conversation paused" : "Type a message... (Anonymous & Secure)"}
           disabled={loading || paused}
-          style={{ flex: 1, padding: 8, border: `1px solid ${colors.border}` }}
+          className="flex-1 rounded-full border border-teal/30 bg-linen px-4 py-2 text-ink placeholder:text-ink/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal disabled:opacity-50"
         />
-        <button onClick={sendMessage} disabled={loading || paused} style={{ border: `1px solid ${colors.border}`, background: colors.surface, color: colors.text }}>
-          Send
+        <button
+          type="button"
+          onClick={sendMessage}
+          disabled={loading || paused}
+          aria-label="Send message"
+          className={`${primaryButtonBase} grid h-10 w-10 shrink-0 place-items-center`}
+        >
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 20 20"
+            width="18"
+            height="18"
+            fill="currentColor"
+          >
+            <path d="M17.5 10l-14-7 4.5 7-4.5 7 14-7z" />
+          </svg>
         </button>
       </div>
+
       {showResources && <ResourcePanel onClose={() => setShowResources(false)} />}
       {showFeedback && <FeedbackForm onClose={() => setShowFeedback(false)} />}
       <Footer />

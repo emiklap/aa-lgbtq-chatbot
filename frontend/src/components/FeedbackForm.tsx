@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { FeedbackRequest } from "../types/api";
-import { colors } from "../theme";
+import { primaryButtonBase, secondaryButtonBase } from "../styles/buttons";
 
 interface FeedbackFormProps {
   onClose: () => void;
@@ -27,93 +27,71 @@ export function FeedbackForm({ onClose }: FeedbackFormProps) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="feedback-form-heading"
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,0.4)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+      className="fixed inset-0 flex items-center justify-center bg-charcoal/50 p-4"
     >
-      <div
-        style={{
-          background: colors.surface,
-          border: `1px solid ${colors.border}`,
-          borderRadius: 8,
-          padding: 24,
-          width: 320,
-          boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
-        }}
-      >
+      <div className="w-80 rounded-2xl border border-teal/20 bg-linen p-6 shadow-xl">
         {submitted ? (
           <>
-            <h2 id="feedback-form-heading" style={{ fontSize: 18, marginBottom: 12, color: colors.text }}>
+            <h2 id="feedback-form-heading" className="mb-3 font-display text-lg text-ink">
               Thank you for your feedback
             </h2>
-            <button type="button" onClick={onClose} style={{ cursor: "pointer", border: `1px solid ${colors.border}` }}>
+            <button
+              type="button"
+              onClick={onClose}
+              className={`${secondaryButtonBase} px-4 py-1.5 text-sm`}
+            >
               Close
             </button>
           </>
         ) : (
           <>
-            <h2 id="feedback-form-heading" style={{ fontSize: 18, marginBottom: 12, color: colors.text }}>
+            <h2 id="feedback-form-heading" className="mb-3 font-display text-lg text-ink">
               Feedback
             </h2>
-            <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-              {[1, 2, 3, 4, 5].map((value) => (
-                <button
-                  key={value}
-                  type="button"
-                  aria-label={`Rate ${value} out of 5`}
-                  onClick={() => setRating(value)}
-                  onMouseEnter={() => setHoverRating(value)}
-                  onMouseLeave={() => setHoverRating(null)}
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 4,
-                    border: `1px solid ${colors.border}`,
-                    background: colors.surface,
-                    cursor: "pointer",
-                    fontSize: 20,
-                    lineHeight: "1",
-                    color: value <= (hoverRating ?? rating ?? 0) ? colors.highlight : colors.textMuted,
-                  }}
-                >
-                  {value <= (hoverRating ?? rating ?? 0) ? "★" : "☆"}
-                </button>
-              ))}
+            <div className="mb-3 flex gap-2">
+              {[1, 2, 3, 4, 5].map((value) => {
+                const filled = value <= (hoverRating ?? rating ?? 0);
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    aria-label={`Rate ${value} out of 5`}
+                    onClick={() => setRating(value)}
+                    onMouseEnter={() => setHoverRating(value)}
+                    onMouseLeave={() => setHoverRating(null)}
+                    className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded border border-teal/20 bg-linen text-xl leading-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal ${
+                      filled ? "text-gold-dark" : "text-ink/40"
+                    }`}
+                  >
+                    {filled ? "★" : "☆"}
+                  </button>
+                );
+              })}
             </div>
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               maxLength={500}
               placeholder="Optional comment"
-              style={{
-                width: "100%",
-                minHeight: 80,
-                padding: 8,
-                marginBottom: 8,
-                fontFamily: "inherit",
-                border: `1px solid ${colors.border}`,
-                color: colors.text,
-                background: colors.surface,
-              }}
+              className="mb-2 min-h-20 w-full rounded-lg border border-teal/20 bg-linen p-2 font-body text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
             />
-            <p style={{ fontSize: 12, color: colors.textMuted, marginBottom: 16 }}>
+            <p className="mb-4 text-xs text-ink/70">
               Please don't include personal details in your comment.
             </p>
-            <div style={{ display: "flex", gap: 8 }}>
+            <div className="flex gap-2">
               <button
                 type="button"
                 onClick={submitFeedback}
                 disabled={rating === null}
-                style={{ cursor: "pointer", background: colors.accent, color: "#FFFFFF", border: "none", borderRadius: 4, padding: "8px 16px" }}
+                className={`${primaryButtonBase} px-4 py-2 text-sm`}
               >
                 Submit
               </button>
-              <button type="button" onClick={onClose} style={{ cursor: "pointer", border: `1px solid ${colors.border}` }}>
+              <button
+                type="button"
+                onClick={onClose}
+                className={`${secondaryButtonBase} px-4 py-2 text-sm`}
+              >
                 Cancel
               </button>
             </div>
